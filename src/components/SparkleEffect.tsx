@@ -1,0 +1,44 @@
+import { useEffect, useState } from "react";
+
+interface Sparkle {
+  id: number;
+  left: number;
+  top: number;
+  delay: number;
+  size: number;
+}
+
+export function SparkleEffect({ count = 20 }: { count?: number }) {
+  const [sparkles, setSparkles] = useState<Sparkle[]>([]);
+
+  useEffect(() => {
+    setSparkles(
+      Array.from({ length: count }, (_, i) => ({
+        id: i,
+        left: Math.random() * 100,
+        top: Math.random() * 100,
+        delay: Math.random() * 3,
+        size: 8 + Math.random() * 16,
+      })),
+    );
+  }, [count]);
+
+  return (
+    <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">
+      {sparkles.map((s) => (
+        <span
+          key={s.id}
+          className="absolute animate-sparkle"
+          style={{
+            left: `${s.left}%`,
+            top: `${s.top}%`,
+            fontSize: `${s.size}px`,
+            animationDelay: `${s.delay}s`,
+          }}
+        >
+          ✨
+        </span>
+      ))}
+    </div>
+  );
+}
